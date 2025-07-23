@@ -126,10 +126,13 @@ if __name__ == "__main__":
         elif choice == "4":
             report['nmap'] = scan_ports_nmap(domain)
         elif choice == "5":
-            ip = socket.gethostbyname(domain)
-            ports = [80, 443, 21, 22, 25, 3306]
-            banners = {port: grab_banner(ip, port) for port in ports}
-            report['banners'] = banners
+            try:
+                ip = socket.gethostbyname(domain)
+                ports = [80, 443, 21, 22, 25, 3306]
+                banners = {port: grab_banner(ip, port) for port in ports}
+                report['banners'] = banners
+            except socket.gaierror:
+                print("[Error] Failed to resolve domain. Skipping banner grabbing.")
         elif choice == "6":
             report['technologies'] = detect_technologies(domain)
         elif choice == "7":
